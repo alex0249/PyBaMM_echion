@@ -553,25 +553,50 @@ class ParticleLithiumIonParameters(BaseParameters):
             f"{phase_prefactor}{Domain} electrode cracking rate", {"Temperature [K]": T}
         )
 
-    def D(self, c_s, T, lithiation=None):
-        """
-        Dimensional diffusivity in particle. In the parameter sets this is defined as
-        a function of stoichiometry (dimensionless), but in the models we use it as a
-        function of concentration (mol/m3). We convert from concentration to
-        stoichiometry by dividing by the maximum concentration.
-        """
+    # def D(self, c_s, T, lithiation=None):
+    #     """
+    #     Dimensional diffusivity in particle. In the parameter sets this is defined as
+    #     a function of stoichiometry (dimensionless), but in the models we use it as a
+    #     function of concentration (mol/m3). We convert from concentration to
+    #     stoichiometry by dividing by the maximum concentration.
+    #     """
+    #     Domain = self.domain.capitalize()
+    #     sto = c_s / self.c_max
+    #     tol = pybamm.settings.tolerances["D__c_s"]
+    #     sto = pybamm.maximum(pybamm.minimum(sto, 1 - tol), tol)
+    #     if lithiation is None:
+    #         lithiation = ""
+    #     else:
+    #         lithiation = lithiation + " "
+    #     inputs = {
+    #         f"{self.phase_prefactor}{Domain} particle stoichiometry": sto,
+    #         "Temperature [K]": T,
+    #     }
+    #     return pybamm.FunctionParameter(
+    #         f"{self.phase_prefactor}{Domain} particle {lithiation}diffusivity [m2.s-1]",
+    #         inputs,
+    #     )
+
+    def D(self, c_s, T, lithiation=None, include_current=False, i_app=None):
         Domain = self.domain.capitalize()
         sto = c_s / self.c_max
         tol = pybamm.settings.tolerances["D__c_s"]
         sto = pybamm.maximum(pybamm.minimum(sto, 1 - tol), tol)
+
         if lithiation is None:
             lithiation = ""
         else:
             lithiation = lithiation + " "
+
         inputs = {
             f"{self.phase_prefactor}{Domain} particle stoichiometry": sto,
             "Temperature [K]": T,
         }
+
+        # Optionally add current
+        if include_current and i_app is not None:
+            inputs["Current [A]"] = i_app
+
         return pybamm.FunctionParameter(
             f"{self.phase_prefactor}{Domain} particle {lithiation}diffusivity [m2.s-1]",
             inputs,

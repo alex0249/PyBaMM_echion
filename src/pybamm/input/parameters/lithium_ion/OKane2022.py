@@ -94,7 +94,7 @@ def SEI_limited_dead_lithium_OKane2022(L_sei):
     return gamma
 
 
-def graphite_LGM50_diffusivity_Chen2020(sto, T):
+def graphite_LGM50_diffusivity_Chen2020(sto, T, current=None):
     """
     LG M50 Graphite diffusivity as a function of stoichiometry, in this case the
     diffusivity is taken to be a constant. The value is taken from [1].
@@ -245,7 +245,7 @@ def graphite_cracking_rate_Ai2020(T_dim):
     return k_cr * arrhenius
 
 
-def nmc_LGM50_diffusivity_Chen2020(sto, T):
+def nmc_LGM50_diffusivity_Chen2020(sto, T, current=None):
     """
      NMC diffusivity as a function of stoichiometry, in this case the
      diffusivity is taken to be a constant. The value is taken from [1].

@@ -273,7 +273,9 @@ class BaseModel(pybamm.BaseBatteryModel):
                 elif ocp_option == "one-state hysteresis":
                     ocp_model = ocp_submodels.OneStateHysteresisOpenCircuitPotential
                 elif ocp_option == "one-state differential capacity hysteresis":
-                    ocp_model = ocp_submodels.OneStateDifferentialCapacityHysteresisOpenCircuitPotential
+                    ocp_model = (
+                        ocp_submodels.OneStateDifferentialCapacityHysteresisOpenCircuitPotential
+                    )
                 elif ocp_option == "MSMR":
                     ocp_model = ocp_submodels.MSMROpenCircuitPotential
                 self.submodels[f"{domain} {phase} open-circuit potential"] = ocp_model(

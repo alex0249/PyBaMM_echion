@@ -35,7 +35,8 @@ class BaseParticle(pybamm.BaseSubModel):
         # Get diffusivity (may have empirical hysteresis)
         diffusivity_option = getattr(domain_options, self.phase)["diffusivity"]
         if diffusivity_option == "single":
-            D = phase_param.D(c, T)
+            D = phase_param.D(c, T, include_current=True, i_app=current)  # NEW
+            # D = phase_param.D(c, T)
         elif diffusivity_option == "current sigmoid":
             k = 100
             if Domain == "Positive":
@@ -44,8 +45,14 @@ class BaseParticle(pybamm.BaseSubModel):
                 lithiation_current = -current
             m_lith = pybamm.sigmoid(0, lithiation_current, k)  # lithiation_current > 0
             m_delith = 1 - m_lith  # lithiation_current < 0
-            D_lith = phase_param.D(c, T, "lithiation")
-            D_delith = phase_param.D(c, T, "delithiation")
+            # D_lith = phase_param.D(c, T, "lithiation")
+            # D_delith = phase_param.D(c, T, "delithiation")
+            D_lith = phase_param.D(
+                c, T, "lithiation", include_current=True, i_app=current
+            )  # NEW
+            D_delith = phase_param.D(
+                c, T, "delithiation", include_current=True, i_app=current
+            )  # NEW
             D = m_lith * D_lith + m_delith * D_delith
 
         # Account for stress-induced diffusion by defining a multiplicative

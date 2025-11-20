@@ -5,5 +5,4 @@ from .thermal import ThermalSubModel
 from .voltage_model import VoltageModel
 from .diffusion_element import NoDiffusion, DiffusionElement
 
-__all__ = ['ocv_element', 'rc_element', 'resistor_element', 'thermal',
-           'voltage_model']
+__all__ = ["ocv_element", "rc_element", "resistor_element", "thermal", "voltage_model"]

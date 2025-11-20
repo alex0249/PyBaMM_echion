@@ -3,7 +3,7 @@ import numpy as np
 import pybamm
 
 
-def graphite_diffusivity_PeymanMPM(sto, T):
+def graphite_diffusivity_PeymanMPM(sto, T, current=None):
     """
     Graphite diffusivity as a function of stoichiometry, in this case the
     diffusivity is taken to be a constant. The value is taken from Peyman MPM.
@@ -120,7 +120,7 @@ def graphite_entropic_change_PeymanMPM(sto):
     return du_dT
 
 
-def NMC_diffusivity_PeymanMPM(sto, T):
+def NMC_diffusivity_PeymanMPM(sto, T, current=None):
     """
     NMC diffusivity as a function of stoichiometry, in this case the
     diffusivity is taken to be a constant. The value is taken from Peyman MPM.
@@ -241,9 +241,9 @@ def NMC_entropic_change_PeymanMPM(sto):
         - 0.5623 * 10 ** (-4) * np.exp(109.451 * sto - 100.006)
     )
 
-    du_dT = (-800 + 779 * u_eq - 284 * u_eq**2 + 46 * u_eq**3 - 2.8 * u_eq**4) * 10 ** (
-        -3
-    )
+    du_dT = (
+        -800 + 779 * u_eq - 284 * u_eq**2 + 46 * u_eq**3 - 2.8 * u_eq**4
+    ) * 10 ** (-3)
 
     return du_dT
 

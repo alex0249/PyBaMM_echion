@@ -13,5 +13,8 @@ from .function_control_external_circuit import (
     CCCVFunctionControl,
 )
 
-__all__ = ['base_external_circuit', 'explicit_control_external_circuit',
-           'function_control_external_circuit']
+__all__ = [
+    "base_external_circuit",
+    "explicit_control_external_circuit",
+    "function_control_external_circuit",
+]

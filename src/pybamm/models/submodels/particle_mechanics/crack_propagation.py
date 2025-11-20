@@ -114,6 +114,7 @@ class CrackPropagation(BaseMechanics):
         # # compressive stress will not lead to crack propagation
         dK_SIF = stress_t_surf * b_cr * pybamm.sqrt(np.pi * l_cr) * (stress_t_surf >= 0)
         dl_cr = k_cr * (dK_SIF**m_cr) / 3600  # divide by 3600 to replace t0_cr
+
         variables.update(
             {
                 f"{Domain} {phase_name}particle cracking rate [m.s-1]": dl_cr,

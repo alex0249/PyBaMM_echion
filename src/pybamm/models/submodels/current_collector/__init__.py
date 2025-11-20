@@ -11,5 +11,9 @@ from .potential_pair import (
     PotentialPair2plus1D,
 )
 
-__all__ = ['base_current_collector', 'effective_resistance_current_collector',
-           'homogeneous_current_collector', 'potential_pair']
+__all__ = [
+    "base_current_collector",
+    "effective_resistance_current_collector",
+    "homogeneous_current_collector",
+    "potential_pair",
+]

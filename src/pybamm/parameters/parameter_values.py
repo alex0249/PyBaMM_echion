@@ -890,10 +890,12 @@ class ParameterValues:
                 if isinstance(child, pybamm.FunctionParameter):
                     # Build new child with parent inputs
                     new_child_children = [
-                        inputs[child_child.name]
-                        if isinstance(child_child, pybamm.Parameter)
-                        and child_child.name in inputs
-                        else child_child
+                        (
+                            inputs[child_child.name]
+                            if isinstance(child_child, pybamm.Parameter)
+                            and child_child.name in inputs
+                            else child_child
+                        )
                         for child_child in child.children
                     ]
                     new_child = pybamm.FunctionParameter(

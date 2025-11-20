@@ -1,1 +1,1 @@
-__all__ = ['Chayambuka2022']
+__all__ = ["Chayambuka2022"]

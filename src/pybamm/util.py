@@ -217,15 +217,7 @@ class FuzzyDict(dict):
                     print(f"No matches found for '{original_key}'")
 
     def copy(self):
-        """
-        Return a shallow copy of the FuzzyDict.
-
-        Returns
-        -------
-        FuzzyDict
-            A new FuzzyDict object with the same keys and values as the original.
-        """
-        return FuzzyDict(self)
+        return FuzzyDict(super().copy())
 
 
 class Timer:

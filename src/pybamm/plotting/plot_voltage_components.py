@@ -31,9 +31,6 @@ def plot_voltage_components(
     split_by_electrode : bool, optional
         Whether to show the overpotentials for the negative and positive electrodes
         separately. Default is False.
-    electrode_phases : (str, str), optional
-        The phases for which to plot the anode and cathode overpotentials, respectively.
-        Default is `("primary", "primary")`.
     show_plot : bool, optional
         Whether to show the plots. Default is True. Set to False if you want to
         only display the plot after plt.show() has been called.
@@ -94,9 +91,11 @@ def plot_voltage_components(
         overpotentials = [
             f"Negative {electrode_phases[0]}particle concentration overpotential [V]",
             f"Positive {electrode_phases[1]}particle concentration overpotential [V]",
-            f"X-averaged negative electrode {electrode_phases[0]}reaction overpotential [V]"
-            if full_cell
-            else "X-averaged battery negative reaction overpotential [V]",
+            (
+                f"X-averaged negative electrode {electrode_phases[0]}reaction overpotential [V]"
+                if full_cell
+                else "X-averaged battery negative reaction overpotential [V]"
+            ),
             f"X-averaged positive electrode {electrode_phases[1]}reaction overpotential [V]",
             "X-averaged battery concentration overpotential [V]",
             "X-averaged battery electrolyte ohmic losses [V]",
