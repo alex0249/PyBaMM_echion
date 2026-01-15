@@ -57,6 +57,10 @@ class LithiumIonParameters(BaseParameters):
         self.rho_c_p_eff = self.therm.rho_c_p_eff
         self.lambda_eff = self.therm.lambda_eff
         self.cell_heat_capacity = self.therm.cell_heat_capacity
+        # New edit
+        self.L_fin = self.geo.L_fin
+        self.rho_c_p_fin = self.therm.rho_c_p_fin
+        self.lambda_fin = self.therm.lambda_fin
 
         # pouch bcs
         self.h_edge_x_min = self.therm.h_edge_x_min
@@ -238,10 +242,8 @@ class DomainLithiumIonParameters(BaseParameters):
             )
             self.epsilon_inactive = 1 - self.epsilon_init
             return
-
         self.rho_c_p_cc = self.therm.rho_c_p_cc
         self.lambda_cc = self.therm.lambda_cc
-
         x = pybamm.SpatialVariable(
             f"x_{domain[0]}",
             domain=[f"{domain} electrode"],
@@ -251,6 +253,7 @@ class DomainLithiumIonParameters(BaseParameters):
 
         # Macroscale geometry
         self.L_cc = self.geo.L_cc
+
 
         for phase in self.phase_params.values():
             phase._set_parameters()
@@ -575,8 +578,8 @@ class ParticleLithiumIonParameters(BaseParameters):
     #     return pybamm.FunctionParameter(
     #         f"{self.phase_prefactor}{Domain} particle {lithiation}diffusivity [m2.s-1]",
     #         inputs,
-    #     )
-
+        # )
+    # New
     def D(self, c_s, T, lithiation=None, include_current=False, i_app=None):
         Domain = self.domain.capitalize()
         sto = c_s / self.c_max

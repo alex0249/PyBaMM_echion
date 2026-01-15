@@ -278,7 +278,7 @@ class SEIGrowth(BaseModel):
         # a * j_sei / (F * z_sei) = rate of consumption of SEI moles by SEI reaction
         dcdt_sei = a * j_sei / (self.param.F * self.phase_param.z_sei)
         # Therefore, -a * j_sei / (F * z_sei) = rate of creation of SEI moles
-        self.rhs = {c_sei: -dcdt_sei}
+        self.rhs = {c_sei: -dcdt_sei} 
 
     def set_initial_conditions(self, variables):
         domain, Domain = self.domain_Domain

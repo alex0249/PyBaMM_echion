@@ -11,7 +11,7 @@ class LossActiveMaterial(BaseModel):
     and :footcite:t:`Reniers2019`.
 
     Parameters
-    ----------
+    ---------- 
     param : parameter class
         The parameters to use for this submodel
     domain : str
@@ -31,7 +31,7 @@ class LossActiveMaterial(BaseModel):
     def get_fundamental_variables(self):
         domain, Domain = self.domain_Domain
         phase = self.phase_name
-
+ 
         if self.x_average is True:
             eps_solid_xav = pybamm.Variable(
                 f"X-averaged {domain} electrode {phase}active material volume fraction",

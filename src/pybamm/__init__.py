@@ -1,6 +1,7 @@
 from pybamm.version import __version__
 # Utility classes and methods
-
+print(f"=== USING CUSTOM PYBAMM VERSION: {__version__} ===")
+print("=== Diffusion coefficient modified for current dependency ===")
 from .util import root_dir
 from .util import Timer, TimerTime, FuzzyDict
 from .util import (

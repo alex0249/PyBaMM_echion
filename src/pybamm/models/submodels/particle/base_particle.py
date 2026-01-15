@@ -72,6 +72,44 @@ class BaseParticle(pybamm.BaseSubModel):
 
         return D * stress_factor
 
+
+    # def _get_effective_diffusivity(self, c, T, current):
+    #     domain, Domain = self.domain_Domain
+    #     phase_param = self.phase_param
+    #     domain_options = getattr(self.options, domain)
+
+    #     # Get diffusivity (may have empirical hysteresis)
+    #     diffusivity_option = getattr(domain_options, self.phase)["diffusivity"]
+    #     if diffusivity_option == "single":
+    #         D = phase_param.D(c, T)
+    #     elif diffusivity_option == "current sigmoid":
+    #         k = 100
+    #         if Domain == "Positive":
+    #             lithiation_current = current
+    #         elif Domain == "Negative":
+    #             lithiation_current = -current
+    #         m_lith = pybamm.sigmoid(0, lithiation_current, k)  # lithiation_current > 0
+    #         m_delith = 1 - m_lith  # lithiation_current < 0
+    #         D_lith = phase_param.D(c, T, "lithiation")
+    #         D_delith = phase_param.D(c, T, "delithiation")
+    #         D = m_lith * D_lith + m_delith * D_delith
+
+    #     # Account for stress-induced diffusion by defining a multiplicative
+    #     # "stress factor"
+    #     stress_option = getattr(self.options, domain)["stress-induced diffusion"]
+
+    #     if stress_option == "true":
+    #         # Ai2019 eq [12]
+    #         sto = c / phase_param.c_max
+    #         Omega = pybamm.r_average(phase_param.Omega(sto, T))
+    #         E = pybamm.r_average(phase_param.E(sto, T))
+    #         nu = phase_param.nu
+    #         theta_M = Omega / (self.param.R * T) * (2 * Omega * E) / (9 * (1 - nu))
+    #         stress_factor = 1 + theta_M * (c - phase_param.c_0)
+    #     else:
+    #         stress_factor = 1
+
+    #     return D * stress_factor
     def _get_standard_concentration_variables(
         self, c_s, c_s_xav=None, c_s_rav=None, c_s_av=None, c_s_surf=None
     ):

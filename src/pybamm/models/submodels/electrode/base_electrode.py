@@ -110,7 +110,7 @@ class BaseElectrode(pybamm.BaseSubModel):
             The potential difference due to the contact resistance, if any.
 
         Returns
-        -------
+        ------- 
         variables : dict
             The variables which can be derived from the potential in the
             current collector.

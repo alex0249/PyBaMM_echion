@@ -103,7 +103,7 @@ class BaseModel(BaseInterface):
         if isinstance(self, pybamm.sei.NoSEI):
             c_sei_0 = 0
             c_sei_cr0 = 0
-            z_sei = 1
+            z_sei = 1 
         else:
             L_sei_0 = phase_param.L_sei_0
             V_bar_sei = phase_param.V_bar_sei

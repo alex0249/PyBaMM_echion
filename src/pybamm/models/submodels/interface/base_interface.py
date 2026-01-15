@@ -48,7 +48,7 @@ class BaseInterface(pybamm.BaseSubModel):
         self.reaction = reaction
         domain_options = getattr(self.options, domain)
         self.size_distribution = domain_options["particle size"] == "distribution"
-
+# Old
     def _get_exchange_current_density(self, variables):
         """
         A private function to obtain the exchange current density
@@ -156,6 +156,95 @@ class BaseInterface(pybamm.BaseSubModel):
                 j0 = self.param.p.prim.j0_Ox(c_e, T)
 
         return j0
+# New
+    # def _get_exchange_current_density(self, variables):
+    #     phase_param = self.phase_param
+    #     domain, Domain = self.domain_Domain
+    #     phase_name = self.phase_name
+    #     domain_options = getattr(self.options, domain)
+
+    #     c_e = variables[f"{Domain} electrolyte concentration [mol.m-3]"]
+    #     T = variables[f"{Domain} electrode temperature [K]"]
+
+    #     if self.reaction == "lithium-ion main":
+    #         domain_options = getattr(self.options, domain)
+    #         if domain_options["particle size"] == "distribution":
+    #             c_s_surf = variables[
+    #                 f"{Domain} {phase_name}particle surface "
+    #                 "concentration distribution [mol.m-3]"
+    #             ]
+    #             if (
+    #                 isinstance(c_s_surf, pybamm.Broadcast)
+    #                 and isinstance(c_e, pybamm.Broadcast)
+    #                 and isinstance(T, pybamm.Broadcast)
+    #             ):
+    #                 c_s_surf = c_s_surf.orphans[0]
+    #                 c_e = c_e.orphans[0]
+    #                 T = T.orphans[0]
+    #                 c_e = pybamm.PrimaryBroadcast(c_e, ["current collector"])
+    #             c_e = pybamm.PrimaryBroadcast(
+    #                 c_e, [f"{domain} {phase_name}particle size"]
+    #             )
+    #             T = pybamm.PrimaryBroadcast(T, [f"{domain} {phase_name}particle size"])
+    #         else:
+    #             c_s_surf = variables[
+    #                 f"{Domain} {phase_name}particle surface concentration [mol.m-3]"
+    #             ]
+    #             if (
+    #                 isinstance(c_s_surf, pybamm.Broadcast)
+    #                 and isinstance(c_e, pybamm.Broadcast)
+    #                 and isinstance(T, pybamm.Broadcast)
+    #             ):
+    #                 c_s_surf = c_s_surf.orphans[0]
+    #                 c_e = c_e.orphans[0]
+    #                 T = T.orphans[0]
+
+    #         # === Broadcast fix for custom parameter set ===
+    #         # If SPMe with x-averaged particles, surface concentration may still live on particle domain.
+    #         # Ensure any particle-surface symbol used in electrode-level algebra is broadcast to electrode.
+    #         # (No change to physics: value is already uniform in x.)
+    #         if (
+    #             not self.size_distribution
+    #             and c_s_surf.domain in [["negative particle"], ["positive particle"]]
+    #         ):
+    #             c_s_surf = pybamm.SecondaryBroadcast(c_s_surf, [f"{domain} electrode"])
+    #         # ==============================================
+
+    #         j0_option = getattr(domain_options, self.phase)["exchange-current density"]
+    #         if j0_option == "single":
+    #             j0 = phase_param.j0(c_e, c_s_surf, T)
+    #         elif j0_option == "current sigmoid":
+    #             current = variables["Total current density [A.m-2]"]
+    #             k = 100
+    #             if Domain == "Positive":
+    #                 lithiation_current = current
+    #             elif Domain == "Negative":
+    #                 lithiation_current = -current
+    #             m_lith = pybamm.sigmoid(0, lithiation_current, k)
+    #             m_delith = 1 - m_lith
+    #             j0_lith = phase_param.j0(c_e, c_s_surf, T, "lithiation")
+    #             j0_delith = phase_param.j0(c_e, c_s_surf, T, "delithiation")
+    #             j0 = m_lith * j0_lith + m_delith * j0_delith
+
+    #     elif self.reaction == "lithium metal plating":
+    #         T = pybamm.boundary_value(T, "right")
+    #         c_Li_metal = 1 / self.param.V_bar_Li
+    #         j0 = self.param.j0_Li_metal(c_e, c_Li_metal, T)
+
+    #     elif self.reaction == "lead-acid main":
+    #         if isinstance(c_e, pybamm.Broadcast) and isinstance(T, pybamm.Broadcast):
+    #             c_e = c_e.orphans[0]; T = T.orphans[0]
+    #         j0 = phase_param.j0(c_e, T)
+
+    #     elif self.reaction == "lead-acid oxygen":
+    #         if isinstance(c_e, pybamm.Broadcast) and isinstance(T, pybamm.Broadcast):
+    #             c_e = c_e.orphans[0]; T = T.orphans[0]
+    #         if self.domain == "negative":
+    #             j0 = pybamm.Scalar(0)
+    #         else:
+    #             j0 = self.param.p.prim.j0_Ox(c_e, T)
+
+    #     return j0
 
     def _get_number_of_electrons_in_reaction(self):
         """Returns the number of electrons in the reaction."""

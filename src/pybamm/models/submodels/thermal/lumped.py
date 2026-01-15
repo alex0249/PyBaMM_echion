@@ -53,7 +53,6 @@ class Lumped(BaseThermal):
         V = variables["Cell thermal volume [m3]"]
         Q_cool_W = -self.param.h_total * (T_vol_av - T_surf) * self.param.A_cooling
         Q_cool_vol_av = Q_cool_W / V
-
         # Contact resistance heating Q_cr
         if self.options["contact resistance"] == "true":
             I = variables["Current [A]"]

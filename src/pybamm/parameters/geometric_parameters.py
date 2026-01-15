@@ -29,12 +29,16 @@ class GeometricParameters(BaseParameters):
         """Defines the dimensional parameters."""
         for domain in self.domain_params.values():
             domain._set_parameters()
-
+        self.n_electrodes_parallel = pybamm.Parameter(
+                "Number of electrodes connected in parallel to make a cell"
+            )
+        # New edit
+        self.L_fin = pybamm.Parameter(f"Fin thickness [m]") / self.n_electrodes_parallel
         # Macroscale geometry
         self.L_x = (
             self.n.L + self.s.L + self.p.L
         )  # Total distance between current collectors
-        self.L = self.n.L_cc + self.L_x + self.p.L_cc  # Total cell thickness
+        self.L = self.n.L_cc + self.L_x + self.p.L_cc + self.L_fin # Total cell thickness
         self.L_Li = pybamm.Parameter("Lithium counter electrode thickness [m]")
         self.L_y = pybamm.Parameter(
             "Electrode width [m]"
@@ -42,9 +46,7 @@ class GeometricParameters(BaseParameters):
         self.L_z = pybamm.Parameter("Electrode height [m]")
         self.r_inner = pybamm.Parameter("Inner cell radius [m]")
         self.r_outer = pybamm.Parameter("Outer cell radius [m]")
-        self.n_electrodes_parallel = pybamm.Parameter(
-            "Number of electrodes connected in parallel to make a cell"
-        )
+
         self.A_cc = (
             self.L_y * self.L_z * self.n_electrodes_parallel
         )  # Current collector cross sectional area
@@ -52,12 +54,13 @@ class GeometricParameters(BaseParameters):
         # Cell surface area and volume (for thermal models only)
         cell_geometry = self.options.get("cell geometry", None)
         if cell_geometry == "pouch":
+            # New 
             # assuming a single-layer pouch cell for now, see
             # https://github.com/pybamm-team/PyBaMM/issues/1777
             self.A_cooling = 2 * (
-                self.L_y * self.L_z + self.L_z * self.L + self.L_y * self.L
-            )
-            self.V_cell = self.L_y * self.L_z * self.L
+                self.L_y * self.L_z + self.L_z * self.L * self.n_electrodes_parallel + self.L_y * self.L * self.n_electrodes_parallel
+            ) 
+            self.V_cell = self.L_y * self.L_z * self.L * self.n_electrodes_parallel
         else:
             self.A_cooling = pybamm.Parameter("Cell cooling surface area [m2]")
             self.V_cell = pybamm.Parameter("Cell volume [m3]")

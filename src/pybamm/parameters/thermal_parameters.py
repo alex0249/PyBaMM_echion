@@ -40,10 +40,16 @@ class ThermalParameters(BaseParameters):
 
         # Initial temperature
         self.T_init = pybamm.Parameter("Initial temperature [K]")
-
+        # New edit: 
         # Lumped model heat capacity (volumetric)
         self.cell_heat_capacity = pybamm.Parameter("Cell heat capacity [J.K-1.m-3]")
-
+        self.fin_density = pybamm.Parameter("Fin density [kg.m-3]")
+        self.fin_specific_heat_capacity = pybamm.Parameter(
+            "Fin specific heat capacity [J.kg-1.K-1]"
+        )
+        self.fin_thermal_conductivity = pybamm.Parameter(
+            "Fin thermal conductivity [W.m-1.K-1]"
+        )
         # Box geometry faces
         self.h_edge_x_min = pybamm.Parameter(
             "Left face heat transfer coefficient [W.m-2.K-1]"
@@ -99,6 +105,19 @@ class ThermalParameters(BaseParameters):
             "Edge heat transfer coefficient [W.m-2.K-1]",
             inputs,
         )
+    def lambda_fin(self, T):
+        """Fin thermal conductivity [W.m-1.K-1]"""
+        inputs = {"Temperature [K]": T}
+        return pybamm.FunctionParameter(
+        f"Fin thermal conductivity [W.m-1.K-1]", inputs
+        )
+    def rho_c_p_fin(self, T):
+        inputs = {"Temperature [K]": T}
+        return pybamm.FunctionParameter(
+            f"Fin specific heat capacity [J.kg-1.K-1]", inputs
+        ) * pybamm.FunctionParameter(
+            f"Fin density [kg.m-3]", inputs
+        )
 
     def rho_c_p_eff(self, T):
         """Effective volumetric heat capacity [J.m-3.K-1]"""
@@ -108,6 +127,8 @@ class ThermalParameters(BaseParameters):
             + self.s.rho_c_p(T) * self.geo.s.L
             + self.p.rho_c_p(T) * self.geo.p.L
             + self.p.rho_c_p_cc(T) * self.geo.p.L_cc
+            + self.rho_c_p_fin(T) * self.geo.L_fin
+
         ) / self.geo.L
 
     def lambda_eff(self, T):
@@ -118,6 +139,8 @@ class ThermalParameters(BaseParameters):
             + self.s.lambda_(T) * self.geo.s.L
             + self.p.lambda_(T) * self.geo.p.L
             + self.p.lambda_cc(T) * self.geo.p.L_cc
+            + self.lambda_fin(T) * self.geo.L_fin
+
         ) / self.geo.L
 
 
