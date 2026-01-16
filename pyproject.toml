@@ -147,17 +147,11 @@ NewmanTobias = "pybamm.models.full_battery_models.lithium_ion.newman_tobian:Newm
 Yang2017 = "pybamm.models.full_battery_models.lithium_ion.Yang2017:Yang2017"
 
 [tool.hatch]
-version.source = "vcs"
-version.fallback-version = "0.0.0"
-
 [tool.hatch.build.targets.wheel]
 packages = ["src/pybamm"]
 
 [tool.hatch.build.targets.sdist]
 include = ["src/pybamm", "CITATION.cff"]
-
-[tool.hatch.hooks.vcs]
-version-file = "src/pybamm/_version.py"
 
 [tool.repo-review]
 ignore = [
